@@ -1,7 +1,7 @@
-import { useLayoutEffect, useState } from 'react'
-import type { Segment } from '../../api/types'
+import {useLayoutEffect, useState} from 'react'
+import type {Segment} from '@/api/types'
 
-type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark'
 
 function savedPreference(key: string) {
   try {
@@ -23,9 +23,7 @@ export function useTheme(defaultSegment: Segment = 'retail') {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = savedPreference('meridian-theme')
     if (saved === 'light' || saved === 'dark') return saved
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   })
   const [override, setOverride] = useState<Segment | null>(() => {
     const saved = savedPreference('meridian-segment')
@@ -49,5 +47,5 @@ export function useTheme(defaultSegment: Segment = 'retail') {
     remember('meridian-segment', next)
   }
 
-  return { theme, segment, toggleTheme, changeSegment }
+  return {theme, segment, toggleTheme, changeSegment}
 }

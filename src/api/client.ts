@@ -1,11 +1,5 @@
-import type { ApiErrorBody } from './types'
+import type {ApiErrorBody} from '@/api/types'
 
-/**
- * Small typed fetch wrapper. Build your query functions on top of this.
- *
- * MSW intercepts these requests in the browser and in tests, so the same
- * `/api/...` paths work locally and in the deployed demo.
- */
 const BASE_URL = import.meta.env.BASE_URL
 
 export class ApiError extends Error {
@@ -24,19 +18,17 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiFetch<T>(
-  path: string,
-  init?: RequestInit,
-): Promise<T> {
+export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const url = `${BASE_URL}${path.replace(/^\//, '')}`
   const response = await fetch(url, init)
-  const body = (await response.json().catch(() => null)) as
-    | T
-    | ApiErrorBody
-    | null
+  const body = (await response.json().catch(() => null)) as T | ApiErrorBody | null
 
   if (!response.ok) {
     throw new ApiError(response.status, body as ApiErrorBody | null)
+  }
+
+  if (body === null) {
+    throw new Error('The server returned an invalid response.')
   }
 
   return body as T
