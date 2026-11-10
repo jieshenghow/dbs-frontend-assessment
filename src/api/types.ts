@@ -3,10 +3,6 @@ export type AccountType = 'checking' | 'savings' | 'credit'
 export type TransactionDirection = 'in' | 'out'
 export type TransactionStatus = 'posted' | 'pending'
 
-export interface Health {
-  ok: boolean
-}
-
 export interface Customer {
   id: string
   firstName: string
@@ -71,17 +67,20 @@ export interface Transfer {
   createdAt: string
 }
 
-export interface CreateTransferRequest {
+export interface NewTransferRecipient {
+  name: string
+  accountNumber: string
+  bank: string
+}
+
+interface TransferDetails {
   fromAccountId: string
   amount: number
   note?: string
-  payeeId?: string
-  recipient?: {
-    name: string
-    accountNumber: string
-    bank: string
-  }
 }
+
+export type CreateTransferRequest = TransferDetails &
+  ({payeeId: string; recipient?: never} | {recipient: NewTransferRecipient; payeeId?: never})
 
 export interface CustomerResponse {
   customer: Customer
