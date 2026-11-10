@@ -3,7 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f4f6fa" />
+    <script>
+      ;(() => {
+        let theme
+        let segment
+        try {
+          theme = localStorage.getItem('meridian-theme')
+          segment = localStorage.getItem('meridian-segment')
+        } catch {}
+        document.documentElement.dataset.theme =
+          theme === 'light' || theme === 'dark'
+            ? theme
+            : window.matchMedia?.('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+        document.documentElement.dataset.segment = segment === 'premium' ? 'premium' : 'retail'
+      })()
+    </script>
+    <link rel="icon" href="data:," />
     <title>Meridian Banking</title>
   </head>
   <body>
